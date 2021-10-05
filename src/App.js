@@ -15,7 +15,7 @@ function App() {
   const handleOnClick = () => {
     const difference = buy - stopLoss,
       qnt = Number.parseFloat(risk / difference).toFixed(2),
-      tgt = Number(buy) + Number(difference*2),
+      tgt = Number(buy) + Number(difference*profitMultiplier),
       investmentAmount = Number(qnt * buy).toFixed(2);
 
       setQuantity(qnt);
