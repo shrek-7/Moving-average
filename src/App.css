@@ -3,16 +3,54 @@
 }
 
 .section {
-  padding: 10px 0px;
+  padding: 10px 20px;
   border-bottom: 1px solid lightgray;
   width: 80%;
   text-align: left;
   margin: 0 auto;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.section input {
+  padding: 5px;
+}
+
+.modal {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba(0,0,0,0.6);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+
+.modal-inner {
+  border-radius: 5px;
+  background: #fff;
+  width: 80vw;
+  padding: 50px 0px;
+  display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.modal .table {
+  border: 1px solid lightgray;
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 60%;
+  font-size: 14px;
 }
 
 p {
@@ -22,6 +60,10 @@ p {
 h5 {
   margin-bottom: 0px;
   margin-top: 10px;
+}
+
+button {
+  padding: 5px 20px;
 }
 
 .App-logo {

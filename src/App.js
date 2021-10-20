@@ -4,15 +4,20 @@ import React, { useState } from 'react';
 
 function App() {
 
-  const [risk, setRisk] = useState(0);
+  const [risk, setRisk] = useState(2000);
   const [buy, setBuy] = useState(0);
   const [stopLoss, setLoss] = useState(0);
   const [quantity, setQuantity] = useState(0);
   const [target, setTarget] = useState(0);
   const [investment, setInvestment] = useState(0);
   const [profitMultiplier, setProfitMultiplier] = useState(2);
+  const [stockName, setStockName] = useState('');
+  const [showModal, setModalStatus] = useState(false);
 
   const handleOnClick = () => {
+    if (risk < 0 || profitMultiplier < 0 || buy < 0 || stopLoss < 0) {
+      return;
+    }
     const difference = buy - stopLoss,
       qnt = Number.parseFloat(risk / difference).toFixed(2),
       tgt = Number(buy) + Number(difference*profitMultiplier),
@@ -21,6 +26,7 @@ function App() {
       setQuantity(qnt);
       setTarget(Number(tgt).toFixed(2));
       setInvestment(investmentAmount);
+      setModalStatus(true);
   };
 
   return (
@@ -35,6 +41,10 @@ function App() {
         <input value={risk} onChange={(e) => setRisk(e.target.value)} type='number'/>
       </div>
       <div className='section'>
+        <p>Stock Name</p>
+        <input value={stockName} onChange={(e) => setStockName(e.target.value)} type='text'/>
+      </div>
+      <div className='section'>
         <p>Buying level</p>
         <input value={buy} onChange={(e) => setBuy(e.target.value)} type='number'/>
       </div>
@@ -44,11 +54,34 @@ function App() {
       </div>
       <button onClick={handleOnClick}>Calculate</button>
       { 
-        quantity > 0 && target > 0 &&
-          <div className='section'>
-            <h5>Quantity: &nbsp; {quantity}</h5>
-            <h5>Target: &nbsp; {target}</h5>
-            <h5>Investment Amount: &nbsp; {investment}</h5>
+        showModal &&
+          <div onClick={() => setModalStatus(false)} className='modal'>
+            <div onClick={(e) => e.stopPropagation()} className='modal-inner'>
+              {
+                stockName &&
+                  <h4>{stockName}</h4>
+              }
+              <div className='table'>
+                <div>QUANTITY</div>
+                <div>{quantity}</div>
+              </div>
+              <div className='table'>
+                <div>BUYING LEVEL</div>
+                <div>{buy}</div>
+              </div>
+              <div className='table'>
+                <div>TARGET</div>
+                <div>{target}</div>
+              </div>
+              <div className='table'>
+                <div>STOP-LOSS</div>
+                <div>{stopLoss}</div>
+              </div>
+              <div className='table'>
+                <div>INVESTMENT Amt</div>
+                <div>{investment}</div>
+              </div>
+            </div>
           </div>
       }
     </div>
