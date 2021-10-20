@@ -13,6 +13,7 @@ function App() {
   const [profitMultiplier, setProfitMultiplier] = useState(2);
   const [stockName, setStockName] = useState('');
   const [showModal, setModalStatus] = useState(false);
+  const [profitPercent, setProfitPercent] = useState(0);
 
   const handleOnClick = () => {
     if (risk < 0 || profitMultiplier < 0 || buy < 0 || stopLoss < 0) {
@@ -21,11 +22,13 @@ function App() {
     const difference = buy - stopLoss,
       qnt = Number.parseFloat(risk / difference).toFixed(2),
       tgt = Number(buy) + Number(difference*profitMultiplier),
-      investmentAmount = Number(qnt * buy).toFixed(2);
+      investmentAmount = Number(qnt * buy).toFixed(2),
+      profitPercent = (Number.parseFloat((tgt - buy)/buy)) * 100;
 
       setQuantity(qnt);
       setTarget(Number(tgt).toFixed(2));
       setInvestment(investmentAmount);
+      setProfitPercent(profitPercent);
       setModalStatus(true);
   };
 
@@ -80,6 +83,10 @@ function App() {
               <div className='table'>
                 <div>INVESTMENT Amt</div>
                 <div>{investment}</div>
+              </div>
+              <div className='table'>
+                <div>PROFIT %</div>
+                <div>{profitPercent} %</div>
               </div>
             </div>
           </div>
