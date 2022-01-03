@@ -1,6 +1,7 @@
 import './App.css';
 
 import React, { useState } from 'react';
+import domtoimage from 'dom-to-image';
 
 function App() {
 
@@ -15,6 +16,8 @@ function App() {
   const [showModal, setModalStatus] = useState(false);
   const [profitPercent, setProfitPercent] = useState(0);
 
+  let modalRef = null;
+
   const handleOnClick = () => {
     if (risk < 0 || profitMultiplier < 0 || buy < 0 || stopLoss < 0) {
       return;
@@ -23,7 +26,7 @@ function App() {
       qnt = Number.parseFloat(risk / difference).toFixed(2),
       tgt = Number(buy) + Number(difference*profitMultiplier),
       investmentAmount = Number(qnt * buy).toFixed(2),
-      profitPercent = (Number.parseFloat((tgt - buy)/buy)) * 100;
+      profitPercent = Number((Number.parseFloat((tgt - buy)/buy)) * 100).toFixed(2);
 
       setQuantity(qnt);
       setTarget(Number(tgt).toFixed(2));
@@ -58,11 +61,11 @@ function App() {
       <button onClick={handleOnClick}>Calculate</button>
       { 
         showModal &&
-          <div onClick={() => setModalStatus(false)} className='modal'>
-            <div onClick={(e) => e.stopPropagation()} className='modal-inner'>
+          <div className='modal'>
+            <div ref={node => { modalRef = node; }} onClick={(e) => e.stopPropagation()} className='modal-inner'>
               {
                 stockName &&
-                  <h4>{stockName}</h4>
+                  <h4 className='stock-name'>{stockName}</h4>
               }
               <div className='table'>
                 <div>QUANTITY</div>
@@ -88,7 +91,23 @@ function App() {
                 <div>PROFIT %</div>
                 <div>{profitPercent} %</div>
               </div>
+              <button className='close-button' onClick={() => { setModalStatus(false); }}>X</button>
             </div>
+              <button
+                className='download-button'
+                onClick={() => {
+                  domtoimage
+                    .toJpeg(modalRef, { quality: 2 })
+                    .then((resp) => {
+                      var link = document.createElement('a');
+                        link.download = `${stockName}_moving_avg.jpeg`;
+                        link.href = resp;
+                        link.click();
+                    })
+                }}
+              >
+                Download
+              </button>
           </div>
       }
     </div>
